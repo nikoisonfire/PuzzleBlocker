@@ -6,9 +6,6 @@ import {LineSegment} from "./lineSegement";
 import {Point} from "./point";
 import {IntAdjoinSqrt2} from "./intadjoinsqrt2";
 
-importScripts("helpers.js", "intadjoinsqrt2.js", "point.js", "lineSegement.js",
-    "directions.js", "tan.js", "../redirect.js", "tangram.js");
-
 /* Maximum range in x/y a tangram can have, maximum it should be set to is 60 */
 const range = new IntAdjoinSqrt2(50, 0);
 /* Addend by which "probability" of an orientation is increased when segments
@@ -305,11 +302,9 @@ const generateTangramEdges = function () {
  * the main script, at the end of generation sort tangrams and send the tans of
  * the first six as JSON string */
 export const generateTangrams = function (number) {
-    generating = true;
 	let generated = [];
 	for (let index = 0; index < number; index++) {
         generated[index] = generateTangramEdges();
-        self.postMessage(index, "*");
         /* Clean up objects - delete keys that have just been set to avoid
          * computing these properties multiple times */
         for (let tanId = 0; tanId < 7; tanId++) {
@@ -321,22 +316,9 @@ export const generateTangrams = function (number) {
     if (!evalVal){
         generated = generated.sort(compareTangrams);
     }
-    generating = false;
+    const jsonTans = [];
     for (let index = 0; index < number; index++) {
-        self.postMessage(JSON.stringify(generated[index].tans), "*");
+        jsonTans.push(JSON.stringify(generated[index].tans));
     }
-    self.postMessage("Generating done!", "*");
+    return jsonTans;
 };
-
-/* Receive the starting message from the main script, where the data of the
- * event is the number of tangrams to be generated, also send message back that
- * Worker has started - if message with  */
-self.addEventListener('message', function (event) {
-	const message = event.data;
-	console.log(message);
-	if (message === 'Evaluation'){
-        evalVal = true;
-    }
-    self.postMessage("Worker started!", "*");
-    generateTangrams(message);
-}, false);

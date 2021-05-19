@@ -5,7 +5,8 @@
 import {clipAngle, eliminateDuplicates, numberEq} from "./helpers";
 import {computeBoundingBox, computeOutline, getAllPoints, outlineArea} from "./tan";
 import {IntAdjoinSqrt2} from "./intadjoinsqrt2";
-import {Point} from "./point";
+import {Point, relativeOrientation} from "./point";
+import {LineSegment} from "./lineSegement";
 
 const evaluationMode = 0;
 const faculty = [1, 1, 2, 6, 24, 120, 720, 5040, 40320];
@@ -362,7 +363,7 @@ export class Evaluation {
 
 		const numSegmentsBefore = allSegments.length;
 		/* Throw out all line segments that occur twice */
-		allSegments = eliminateDuplicates(allSegments, compareLineSegments, false);
+		allSegments = eliminateDuplicates(allSegments, LineSegment.compareLineSegments, false);
 		this.matchedEdges = (numSegmentsBefore - allSegments.length) / 2;
 		const convexHull = this.computeConvexHull(outline[0], allPoints.sort(IntAdjoinSqrt2.comparePointsYX)[0]);
 		this.convexHullArea = outlineArea(convexHull).toFloat();
