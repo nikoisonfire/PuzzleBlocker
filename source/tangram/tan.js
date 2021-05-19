@@ -3,7 +3,7 @@ import "./intadjoinsqrt2";
 import {eliminateDuplicates, generating} from "./helpers";
 import {Directions, InsideDirections} from "./directions";
 import {LineSegment} from "./lineSegement";
-import {Point, relativeOrientation} from "./point";
+import {bothPointsMultipleTimes, Point, relativeOrientation} from "./point";
 import {IntAdjoinSqrt2} from "./intadjoinsqrt2";
 
 /** Class for a Tan */

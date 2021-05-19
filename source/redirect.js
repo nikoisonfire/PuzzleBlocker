@@ -7,6 +7,7 @@ import {IntAdjoinSqrt2} from "./tangram/intadjoinsqrt2";
 import {Point} from "./tangram/point";
 import {computeSegments, getAllPoints, Tan} from "./tangram/tan";
 import {LineSegment} from "./tangram/lineSegement";
+import {generateTangrams} from "./tangram/generator";
 
 /* Settings/letiables for generating yea */
 let numTangrams = 1000;
@@ -629,47 +630,25 @@ let addTangrams = function () {
 
 	 generated[4].toSVGTans("fifth4",false);
 	 generated[5].toSVGTans("sixth5",false);*/
-	worker.terminate();
 };
 
 /* Start generating process in a web worker */
 let startGenerator = function () {
+	// 1
+	const before = performance.now();
+	const jsonTans = generateTangrams(100);
+	const after = performance.now();
+	console.log(after-before+"ms");
 
-	const workerURL = browser.runtime.getURL(new URL("./tangram/generator.js", import.meta.url));
-	console.log(workerURL);
-	try {
-		const worker = new Worker(browser.runtime.getURL("test.js"));
-		worker.postMessage("Test");
+	// 2
+	generating = false;
+	jsonTans.forEach(el =>
+		generated.push(parseTanArray(el))
+	);
 
-		worker.onmessage = function (event) {
-			console.log("Worker message returned!");
-			let message = event.data;
-			if (typeof message === 'string') {
-				if (message === "Worker started!") {
-					generating = true;
-					console.log('Worker said: ', message);
-				} else if (message === "Generating done!") {
-					addTangrams();
-					//if (firstGeneration)
-					//updateLoading(2);
-					firstGeneration = false;
-				} else {
-					generating = false;
-					generated.push(parseTanArray(message));
-				}
-			} else {
-				console.log('Worker said: ', "Generated!");
-				/*if (firstGeneration){
-					updateLoading((message + 1) / numTangrams);
-				}*/
-			}
-		};
-		worker.postMessage(numTangrams);
-	}
-	catch (e) {
-		console.log(e);
-	}
-
+	// 3
+	addTangrams();
+	firstGeneration = false;
 };
 
 

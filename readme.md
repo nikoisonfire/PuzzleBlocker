@@ -5,7 +5,7 @@ Private github repo for PuzzleBlocker Chrome extension
 ## Run
 
 1. `npm run watch`
-2. `web-ext run`
+2. `web-ext run` in dist folder
 
 ## Parcel Tasks
 
