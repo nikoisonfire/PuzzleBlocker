@@ -2,6 +2,8 @@
 
 Private github repo for PuzzleBlocker Chrome extension
 
+Warning!! This is the old master branch with the webworker to generate tangrams!
+
 ## Run
 
 1. `npm run watch`
