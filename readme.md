@@ -2,6 +2,11 @@
 
 Private github repo for PuzzleBlocker Chrome extension
 
+## Run
+
+1. `npm run watch`
+2. `web-ext run`
+
 ## Parcel Tasks
 
 1. start - to start the local dev server
