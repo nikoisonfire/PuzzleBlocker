@@ -1,6 +1,6 @@
 {
   "name": "PuzzleBlocker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Solve puzzles to stop procrastinating on social media.",
   "homepage_url": "https://www.puzzleblocker.com",
   "manifest_version": 2,
@@ -18,16 +18,21 @@
 	"default_icon": "icon_128.png"
   },
   "permissions": [
-	"storage"
+	"storage",
+	"webNavigation",
+	"tabs",
+	"extension",
+	"activeTab"
   ],
   "options_ui": {
 	"chrome_style": true,
+	"browser_style": true,
 	"page": "options.html"
   },
   "background": {
 	"persistent": false,
 	"scripts": [
-	  "background.js"
+	 	"background.js"
 	]
   }
 }

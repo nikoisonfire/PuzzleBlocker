@@ -7,16 +7,16 @@
 		"lint:css": "stylelint source/**/*.css",
 		"lint:js": "xo",
 		"test": "run-p lint:* build",
-		"watch": "parcel watch source/manifest.json --dist-dir distribution --no-cache --no-hmr",
-	  	"start": "parcel source/manifest.json --host localhost --target webext-dev"
+		"watch": "parcel watch source/manifest.json source/redirect.* --dist-dir distribution --no-cache --no-hmr",
+		"start": "parcel source/manifest.json --host localhost --target webext-dev"
 	},
-  	"targets": {
-	  "webext-dev": {
-		"sourceMap": {
-		  "inline": true,
-		  "inlineSources": true
+	"targets": {
+		"webext-dev": {
+			"sourceMap": {
+				"inline": true,
+				"inlineSources": true
+			}
 		}
-	  }
 	},
 	"browserslist": [
 		"last 1 Chrome version",
@@ -39,6 +39,7 @@
 		"extends": "stylelint-config-xo"
 	},
 	"dependencies": {
+		"chrome": "^0.1.0",
 		"webext-options-sync": "^2.0.1",
 		"webextension-polyfill": "^0.7.0"
 	},

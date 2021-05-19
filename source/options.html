@@ -5,26 +5,86 @@
 <link rel="stylesheet" href="options.css">
 
 <form id="options-form" class="detail-view-container">
-	<h3>Color Previewer</h3>
-	<div class="color-picker">
-		<div class="color-inputs">
-			<label class="color-input">
-				<span>R</span>
-				<input type="range" min="0" max="255" name="colorRed">
-				<input type="number" name="colorRed" min="0" max="255">
-			</label>
-			<label class="color-input">
-				<span>G</span>
-				<input type="range" min="0" max="255" name="colorGreen">
-				<input type="number" name="colorGreen" min="0" max="255">
-			</label>
-			<label class="color-input">
-				<span>OMG</span>
-				<input type="range" min="0" max="255" name="colorBlue">
-				<input type="number" name="colorBlue" min="0" max="255">
-			</label>
+	<h2>Options</h2>
+	<br/>
+	<strong><i>NOTE: Settings are saved automatically</i></strong>
+	<div class="options">
+		<div class="option">
+			<label class="formLabel">Enabled</label>
+			<div>
+				<label class="switch">
+					<input type="checkbox" id="enabled" name="enabled">
+					<span class="slider round"></span>
+				</label>
+			</div>
 		</div>
-		<div class="color-output"></div>
+
+		<div class="option texta">
+			<label class="formLabel">Blacklist</label>
+			<div>
+			<textarea id="blacklist" rows="10" name="blacklist">facebook.com
+youtube.com
+9gag.com</textarea>
+				<span class="greyText">domains only - no http://</span>
+			</div>
+
+		</div>
+
+		<div class="option">
+			<label class="formLabel">Difficulty</label>
+			<div>
+				<select name="difficulty" id="difficulty">
+					<option value="easy" selected>Easy</option>
+					<option value="medium">Medium</option>
+					<option value="hard">Hard</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="option">
+			<label class="formLabel">Puzzle type(s)</label>
+			<div class="difficulty">
+
+				<label for="tangram">
+					<input type="checkbox" id="tangram" name="tangram" value="tangram"/>
+					Tangram
+				</label>
+
+				<label for="sudoku">
+					<input type="checkbox" id="sudoku" name="sudoku" value="sudoku"/>
+					Sudoku
+				</label>
+
+				<label for="math">
+					<input type="checkbox" id="math" name="math" value="math"/>
+					Math
+				</label>
+
+				<label for="chess">
+					<input type="checkbox" id="chess" name="chess" value="chess"/>
+					Chess problems
+				</label>
+
+				<label for="labyrinth">
+					<input type="checkbox" id="labyrinth" name="labyrinth" value="labyrinth"/>
+					Labyrinth
+				</label>
+			</div>
+		</div>
+
+		<div class="option">
+			<label class="formLabel">Time until Hint</label>
+			<div>
+				<input type="number" id="hintTime">
+			</div>
+		</div>
+
+		<div class="option">
+			<label class="formLabel">Time until Solution</label>
+			<div>
+				<input type="number" id="solutionTime">
+			</div>
+		</div>
 	</div>
 </form>
 
