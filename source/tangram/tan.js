@@ -19,7 +19,7 @@ export class Tan {
 		this.tanType = tanType;
 		this.anchor = anchor;
 		this.orientation = orientation;
-		if (!(typeof generating === 'undefined') && generating) {
+		if (!(typeof generating.val === 'undefined') && generating) {
 			this.points = this.getPoints();
 			this.segments = this.getSegments();
 			this.insidePoints = this.getInsidePoints();
@@ -38,7 +38,7 @@ export class Tan {
 	/* Calculate the points involved in this tan, using anchor point and pre-
 	 * calculated direction vectors */
 	getPoints = function () {
-		if (generating && typeof this.points != 'undefined') {
+		if (generating.val && typeof this.points != 'undefined') {
 			return this.points;
 		}
 		const points = [];
@@ -55,7 +55,7 @@ export class Tan {
 	/* Calculate segments from points (connect consecutive points to segments */
 	getSegments = function () {
 		let pointId;
-		if (generating && typeof this.segments != 'undefined') {
+		if (generating.val && typeof this.segments != 'undefined') {
 			return this.segments;
 		}
 		const segments = [];
@@ -73,7 +73,7 @@ export class Tan {
 
 	/* Calculate points inside this tan from anchor and pre-calculated directions */
 	getInsidePoints = function () {
-		if (generating && typeof this.insidePoints != 'undefined') {
+		if (generating.val && typeof this.insidePoints != 'undefined') {
 			return this.insidePoints;
 		}
 		const insidePoints = [];
@@ -85,7 +85,8 @@ export class Tan {
 	};
 
 	toSVG = function () {
-		const points = this.getPoints();
+		const a = Math.random();
+		let points = this.getPoints();
 		let pointsString = "";
 		for (let i = 0; i < points.length; i++) {
 			pointsString += points[i].toFloatX() + ", " + points[i].toFloatY() + " ";

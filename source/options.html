@@ -42,6 +42,18 @@ youtube.com
 		</div>
 
 		<div class="option">
+			<label class="formLabel">Block embedded</label>
+			<div>
+				<label class="switch">
+					<input type="checkbox" id="embedded" name="embedded">
+					<span class="slider round"></span>
+				</label>
+				<span class="greyText">i.e. tweets, facebook posts, youtube videos in other pages</span>
+			</div>
+		</div>
+
+		<!--
+		<div class="option">
 			<label class="formLabel">Puzzle type(s)</label>
 			<div class="difficulty">
 
@@ -71,18 +83,19 @@ youtube.com
 				</label>
 			</div>
 		</div>
+		-->
 
 		<div class="option">
 			<label class="formLabel">Time until Hint</label>
 			<div>
-				<input type="number" id="hintTime">
+				<input type="number" id="hintTime" name="hintTime"> seconds
 			</div>
 		</div>
 
 		<div class="option">
 			<label class="formLabel">Time until Solution</label>
 			<div>
-				<input type="number" id="solutionTime">
+				<input type="number" id="solutionTime" name="solutionTime"> seconds
 			</div>
 		</div>
 	</div>

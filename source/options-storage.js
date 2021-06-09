@@ -10,6 +10,7 @@ export default new OptionsSync({
 		math: false,
 		chess: false,
 		labyrinth: false,
+		embedded: false,
 		hintTime: 240,
 		solutionTime: 360
 	},

@@ -10,7 +10,8 @@ import {IntAdjoinSqrt2} from "./intadjoinsqrt2";
 const range = new IntAdjoinSqrt2(50, 0);
 /* Addend by which "probability" of an orientation is increased when segments
  * align */
-const increaseProbability = 50;
+// NOTE: Higher number -> Better connectivity
+const increaseProbability = 500;
 
 const checkNewTan = function (currentTans, newTan) {
 	let contains;
@@ -313,7 +314,10 @@ export const generateTangrams = function (number) {
             delete generated[index].tans[tanId].insidePoints;
         }
     }
+	// TODO: this (default) sorts tangrams by most difficult to solve (prob 1. or 2. tangram displayed)
+	// use this for difficulty setting in the later stages of development
     if (!evalVal){
+    	console.log("sorting tangrams...");
         generated = generated.sort(compareTangrams);
     }
     const jsonTans = [];

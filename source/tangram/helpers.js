@@ -1,5 +1,7 @@
 /* generating variable -> True if still in generating process */
-export let generating = true;
+export let generating = {
+	val: true
+};
 export let evalVal = false;
 
 /* Conversion between different angle systems */

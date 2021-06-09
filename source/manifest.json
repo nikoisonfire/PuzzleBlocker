@@ -19,6 +19,7 @@
   },
   "permissions": [
 	"storage",
+	"alarms",
 	"webNavigation",
 	"tabs",
 	"extension",

@@ -24,7 +24,7 @@ export class IntAdjoinSqrt2 {
 	/* Checking if this number is equal to another one, in generating only whole
 	 * numbers are used === can be used for comparison */
 	eq = function (other) {
-		if (generating) {
+		if (generating.val) {
 			return this.coeffInt === other.coeffInt && this.coeffSqrt === other.coeffSqrt;
 		} else {
 			return numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt);
@@ -73,7 +73,7 @@ export class IntAdjoinSqrt2 {
 
 	/* Check if this number is equal to zero, use === during generating */
 	isZero = function () {
-		if (generating) {
+		if (generating.val) {
 			return this.coeffInt === 0 && this.coeffSqrt === 0;
 		} else {
 			return (numberEq(this.coeffInt, 0) && numberEq(this.coeffSqrt, 0));

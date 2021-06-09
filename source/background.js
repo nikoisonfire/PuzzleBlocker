@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-unassigned-import
 import optionsStorage from './options-storage.js';
 import browser from 'webextension-polyfill';
+import cache from 'webext-storage-cache';
 
 let currentBlocked = "";
 let currentTab;
@@ -15,26 +16,70 @@ async function main(details) {
 			blacklistArray
 		);
 
-		if(urlContains(details.url, blacklistArray) && details.url !== currentBlocked) {
+		const currentURL = details.url;
+		const currentTab = details.tabId;
 
-			currentBlocked = details.url;
-			currentTab = details.tabId;
-			browser.tabs.update(currentTab, {"url": "./redirect.html"})
+		/**
+		 * [
+		 * 	{
+		 * 		tabId: 1,
+		 * 		url: "facebook.com"
+		 * 	}
+		 * ]
+		 */
 
-		}
+		const tabCache = await cache.get(currentTab);
+		console.log("cache:", tabCache)
+
+			/**
+			 * 1. Check if URL matches
+			 * 2. Check if URL is not embedded (iFrame)
+			 */
+			if (urlContains(currentURL, blacklistArray)
+				&& details.frameId === 0) {
+				// Match on blacklist
+
+				// Check if tabCache exists
+				if(tabCache === undefined) {
+					const newCache = await cache.set(currentTab, currentURL, {
+						minutes: 30
+					});
+					console.log("Set in cache:", newCache)
+				}
+				else if (tabCache === "") {
+					return;
+				}
+				browser.tabs.update(currentTab, {"url": "./redirect.html"})
+			}
+			else {
+				// No match on blacklist, don't do anything
+
+			}
 	}
 }
 
-async function unblockSite(request, sender, sendResponse) {
-	const options = await optionsStorage.getAll();
+async function unblockSite(tabId, sender, sendResponse) {
+	console.log("tabId: ", tabId);
 
-	console.log("cb:"+currentBlocked);
+	const redirect = await cache.get(tabId);
 
-	browser.tabs.update(currentTab, {"url": currentBlocked})
+	await cache.set(tabId, "");
+
+	browser.tabs.update(tabId, {"url": redirect})
 }
 
 async function isUnblocked() {
 	const options = await optionsStorage.getAll();
+
+
+}
+
+async function removeTabFromCache(tabId) {
+	await cache.delete(tabId);
+}
+
+function findURLinCache(cacheArray, url) {
+	return cacheArray.length === 0 ? false : cacheArray.filter(obj => obj.url === url).length > 0;
 
 }
 
@@ -51,6 +96,9 @@ function urlContains(url, keywords){
 
 	return result;
 }
+
+
+browser.tabs.onRemoved.addListener(removeTabFromCache)
 
 browser.runtime.onMessage.addListener(unblockSite);
 

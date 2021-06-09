@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 
 import {Directions, FlipDirections, numOrientations} from "./tangram/directions";
-import {arrayEq, clipAngle, evalVal, shuffleArray, generating} from "./tangram/helpers";
+import {arrayEq, clipAngle, evalVal, shuffleArray, generating, setGenerating} from "./tangram/helpers";
 import {Tangram} from "./tangram/tangram";
 import {IntAdjoinSqrt2} from "./tangram/intadjoinsqrt2";
 import {Point} from "./tangram/point";
@@ -74,24 +74,7 @@ let resetPieces = function () {
 
 /* Game logic - Show which action will be used if dragging is used */
 let changeIconVisibility = function (showMove, showRotate) {
-	let element = document.getElementById("game");
-	/*if (showMove) {
-		document.getElementById("move").setAttributeNS(null, "display", "block");
-		move = true;
-		element.style.cursor = "url('move.ico') 8 8, auto";
-	} else {
-		document.getElementById("move").setAttributeNS(null, "display", "none");
-		move = false;
-	}
-	if (showRotate) {
-		document.getElementById("rotate").setAttributeNS(null, "display", "block");
-		element.style.cursor = "url('rotate.ico') 8 8, auto";
-	} else {
-		document.getElementById("rotate").setAttributeNS(null, "display", "none");
-	}
-	if (!showMove && !showRotate) {
-		element.style.cursor = "auto";
-	}*/
+	move = !!showMove;
 };
 
 /* Game logic - Set the action that will be used if dragging is used based on the
@@ -100,7 +83,7 @@ let showAction = function (event) {
 	/* If tan is already selected and we are not currently handling a touch event
 	 * nothing has to be done */
 	if (currentTan != -1 && !('touches' in event)) return;
-	let target = ((window.event) ? (event.srcElement) : (event.currentTarget));
+	let target = event.currentTarget;
 	let tanIndex = parseInt(target.id[target.id.length - 1]);
 	let mouse = getMouseCoordinates(event);
 	let points = gameOutline[tanIndex].getPoints();
@@ -134,6 +117,7 @@ let checkSolved = function () {
 	/* Check if the outlines are the same, when the tangram has been solved, the
 	 * outlines have to match exactly due to snapping */
 	let solved = true;
+	sendMessage();
 	for (let outlineId = 0; outlineId < generated[chosen].outline.length; outlineId++) {
 		solved = solved && arrayEq(generated[chosen].outline[outlineId], tangramFromPieces.outline[outlineId], Point.comparePoints);
 	}
@@ -310,8 +294,7 @@ let updateTanPiece = function (tanIndex) {
 		return;
 	}
 	let tanId = "piece" + tanIndex;
-	let tan = document.getElementById(tanId);
-	tan.setAttributeNS(null, "points", gameOutline[tanIndex].toSVG());
+	document.getElementById(tanId).setAttribute("points", gameOutline[tanIndex].toSVG());
 };
 
 /* Game logic - Update the svg of the tan with the given index during rotation,
@@ -338,7 +321,7 @@ let updateTanPieceRotation = function (tanIndex, angle) {
 /* Game logic - Increase the orientation of the tan for which the event fired, if
  * the mouse coordinates have changed only very little since the selection (mousedown) */
 let rotateTan = function (event) {
-	let target = ((window.event) ? (event.srcElement) : (event.currentTarget));
+	let target = event.currentTarget;
 	let tanIndex = parseInt(target.id[target.id.length - 1]);
 	// console.log("clicked: " + tanIndex);
 	let mouse = getMouseCoordinates(event);
@@ -355,10 +338,11 @@ let rotateTan = function (event) {
 /* Game logic - Select a tan as the current one, which is then moved/rotated if
  * the mouse moves (mousedown), update all "last states" in this function */
 let selectTan = function (event) {
-	let target = ((window.event) ? (event.srcElement) : (event.currentTarget));
+	let target = event.currentTarget;
 	let tanIndex = parseInt(target.id[target.id.length - 1]);
 	/* Show that this tan is active by "removing" border */
-	document.getElementById("piece" + tanIndex).setAttributeNS(null, "stroke", "#FF9900");
+	document.getElementById("piece" + tanIndex).setAttributeNS(null, "stroke-width", "0.22");
+	//document.getElementById("piece" + tanIndex).setAttributeNS(null, "opacity", "0.7");
 	//console.log("selected: " + tanIndex);
 	currentTan = tanIndex;
 	let mouse = getMouseCoordinates(event);
@@ -377,10 +361,11 @@ let deselectTan = function (event) {
 	} else {
 		translations += 1;
 	}
-	if (currentTan != -1) {
+	if (currentTan !== -1) {
 		snapped[currentTan] = false;
 		/* Show that tan is not active anymore */
-		document.getElementById("piece" + currentTan).setAttributeNS(null, "stroke", "#E9E9E9");
+		document.getElementById("piece" + currentTan).setAttributeNS(null, "stroke-width", "0.1");
+		//document.getElementById("piece" + currentTan).setAttributeNS(null, "opacity", "0.8");
 	}
 	snapToClosePoints();
 	currentTan = -1;
@@ -393,7 +378,7 @@ let deselectTan = function (event) {
 /* Game logic - move or rotate tan (mousemove) */
 let moveTan = function (event) {
 	let mouse = getMouseCoordinates(event);
-	if (currentTan != -1) {
+	if (currentTan > -1) {
 		if (move) {
 			gameOutline[currentTan].anchor = mouse.subtract(mouseOffset);
 			updateTanPiece(currentTan);
@@ -446,8 +431,8 @@ let addTangramPieces = function () {
 		shape.setAttributeNS(null, "points", gameOutline[tanIndex].toSVG());
 		shape.setAttributeNS(null, "fill", '#FF9900');
 		shape.setAttributeNS(null, "opacity", "0.8");
-		shape.setAttributeNS(null, "stroke", "#E9E9E9");
-		shape.setAttributeNS(null, "stroke-width", "0.3");
+		shape.setAttributeNS(null, "stroke", "#000000");
+		shape.setAttributeNS(null, "stroke-width", "0.1");
 		document.getElementById("game").appendChild(shape);
 	}
 	let tangramPieces = document.getElementsByClassName("tan");
@@ -504,7 +489,7 @@ let addIcons = function () {
 	let watch = document.createElementNS("http://www.w3.org/2000/svg", "text");
 	watch.setAttributeNS(null, "x", "3");
 	watch.setAttributeNS(null, "y", "57.9");
-	watch.setAttributeNS(null, "fill", "#E9E9E9");
+	watch.setAttributeNS(null, "fill", "#f9f9f9");
 	watch.setAttributeNS(null, "id", "watch");
 	watch.setAttributeNS(null, "font-size", "2.7");
 	watch.textContent = "\uf017  " + "00:00";
@@ -552,8 +537,8 @@ let addFlipButton = function () {
 		flipElements[flipIndex].addEventListener("click", flipParallelogram);
 		/* Change color on hover */
 		flipElements[flipIndex].addEventListener("mouseover", function () {
-			// console.log("mousein");
-			document.getElementsByClassName("flip")[0].firstElementChild.setAttributeNS(null, "fill", '#3299BB');
+			//("mousein");
+			document.getElementsByClassName("flip")[0].firstElementChild.setAttributeNS(null, "fill", '#666666');
 		});
 		flipElements[flipIndex].addEventListener("mouseout", function () {
 			// console.log("mouseOut");
@@ -596,10 +581,10 @@ let changeTangramVisibility = function (hide) {
 	if (!evalVal){
 		/* Show game buttons when hiding tangrams and regenerate button otherwise */
 		document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
-		document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
-		document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
-		document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
-		document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
+		//document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
+		//document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
+		//document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
+		//document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
 	}
 };
 
@@ -636,12 +621,12 @@ let addTangrams = function () {
 let startGenerator = function () {
 	// 1
 	const before = performance.now();
-	const jsonTans = generateTangrams(100);
+	const jsonTans = generateTangrams(50);
 	const after = performance.now();
-	console.log(after-before+"ms");
+	console.log(after-before+"ms to generate");
 
 	// 2
-	generating = false;
+	generating.val = false;
 	jsonTans.forEach(el =>
 		generated.push(parseTanArray(el))
 	);
@@ -654,6 +639,8 @@ let startGenerator = function () {
 
 window.onload = function () {
 	document.getElementById("unblockbutton").addEventListener("click", sendMessage);
+
+	console.log(browser.tabs.getCurrent())
 
 	user = new Date().getTime();
 	/* Provide fallBack if Workers or inline SVG are not supported */
@@ -678,9 +665,9 @@ window.onload = function () {
 			if (sourceId === 'content') {
 				return;
 			}
-			chosen = parseInt(sourceId[sourceId.length - 1]);
-			generated[chosen].toSVGOutline("game");
-			console.log(JSON.stringify(generated[chosen].tans));
+			//console.log(event.currentTarget)
+			chosen = i;
+			generated[i].toSVGOutline("game");
 			//generated[chosen].toSVGTans("game");
 			document.getElementById("game").style.display = "block";
 			addTangramPieces();
@@ -695,10 +682,8 @@ window.onload = function () {
 	}
 
 	document.getElementById("generate").addEventListener('click', function () {
-		console.log("Sending message....")
 		/* Hide tangrams and generate new tangrams */
-		firstGeneration = true;
-		changeTangramVisibility(true);
+		changeTangramVisibility(false);
 		generated = [];
 		//addLoading();
 		startGenerator();
@@ -772,11 +757,10 @@ window.onload = function () {
 	new IntAdjoinSqrt2(42,6).compare(new IntAdjoinSqrt2(30,12));
 
 }
-const sendMessage = function() {
+const sendMessage = async function() {
 	console.log("Sending message....")
-	const msg = browser.runtime.sendMessage({
-		msg: "Hello there!"
-	})
+	const tab = await browser.tabs.getCurrent();
+	const msg = browser.runtime.sendMessage(tab.id)
 		.then(console.log)
 		.catch(console.log)
 }

@@ -49,7 +49,8 @@ export class Tangram {
 			pathdata += "L " + this.outline[0][pointId].toFloatX() + ", " + this.outline[0][pointId].toFloatY() + " ";
 		}
 		pathdata += "Z ";
-		shape.setAttributeNS(null, "fill", '#3299BB');
+		// Tangram Outline Color
+		shape.setAttributeNS(null, "fill", '#666666');
 		for (let outlineId = 1; outlineId < this.outline.length; outlineId++) {
 			pathdata += "M " + this.outline[outlineId][0].toFloatX() + ", " + this.outline[outlineId][0].toFloatY() + " ";
 			for (pointId = 1; pointId < this.outline[outlineId].length; pointId++) {
