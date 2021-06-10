@@ -582,7 +582,7 @@ let changeTangramVisibility = function (hide) {
 		/* Show game buttons when hiding tangrams and regenerate button otherwise */
 		document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
 		//document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
-		//document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
+		document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
 		//document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
 		//document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
 	}
@@ -638,10 +638,6 @@ let startGenerator = function () {
 
 
 window.onload = function () {
-	document.getElementById("unblockbutton").addEventListener("click", sendMessage);
-
-	console.log(browser.tabs.getCurrent())
-
 	user = new Date().getTime();
 	/* Provide fallBack if Workers or inline SVG are not supported */
 	if (typeof SVGRect === "undefined" || !window.Worker) {
@@ -758,7 +754,6 @@ window.onload = function () {
 
 }
 const sendMessage = async function() {
-	console.log("Sending message....")
 	const tab = await browser.tabs.getCurrent();
 	const msg = browser.runtime.sendMessage(tab.id)
 		.then(console.log)

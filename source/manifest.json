@@ -21,9 +21,7 @@
 	"storage",
 	"alarms",
 	"webNavigation",
-	"tabs",
-	"extension",
-	"activeTab"
+	"tabs"
   ],
   "options_ui": {
 	"chrome_style": true,

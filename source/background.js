@@ -2,22 +2,23 @@
 import optionsStorage from './options-storage.js';
 import browser from 'webextension-polyfill';
 import cache from 'webext-storage-cache';
+import {generateTangrams} from "./tangram/generator";
 
-let currentBlocked = "";
-let currentTab;
+let difficulty;
 
 async function main(details) {
-
 	const options = await optionsStorage.getAll();
 
+
 	if(options.enabled) {
-		const blacklistArray = options.blacklist.split("\n");
-		console.log(
-			blacklistArray
+		const blacklistArray = options.blacklist.split("\n").filter(
+			el => el !== ""
 		);
 
 		const currentURL = details.url;
 		const currentTab = details.tabId;
+
+		const blockEmbedded = options.embedded ? true : details.frameId === 0;
 
 		/**
 		 * [
@@ -29,14 +30,13 @@ async function main(details) {
 		 */
 
 		const tabCache = await cache.get(currentTab);
-		console.log("cache:", tabCache)
 
 			/**
 			 * 1. Check if URL matches
 			 * 2. Check if URL is not embedded (iFrame)
 			 */
 			if (urlContains(currentURL, blacklistArray)
-				&& details.frameId === 0) {
+				&& blockEmbedded) {
 				// Match on blacklist
 
 				// Check if tabCache exists
@@ -44,7 +44,6 @@ async function main(details) {
 					const newCache = await cache.set(currentTab, currentURL, {
 						minutes: 30
 					});
-					console.log("Set in cache:", newCache)
 				}
 				else if (tabCache === "") {
 					return;
@@ -59,7 +58,6 @@ async function main(details) {
 }
 
 async function unblockSite(tabId, sender, sendResponse) {
-	console.log("tabId: ", tabId);
 
 	const redirect = await cache.get(tabId);
 
@@ -68,19 +66,8 @@ async function unblockSite(tabId, sender, sendResponse) {
 	browser.tabs.update(tabId, {"url": redirect})
 }
 
-async function isUnblocked() {
-	const options = await optionsStorage.getAll();
-
-
-}
-
 async function removeTabFromCache(tabId) {
 	await cache.delete(tabId);
-}
-
-function findURLinCache(cacheArray, url) {
-	return cacheArray.length === 0 ? false : cacheArray.filter(obj => obj.url === url).length > 0;
-
 }
 
 function urlContains(url, keywords){
@@ -98,8 +85,12 @@ function urlContains(url, keywords){
 }
 
 
+
+// Clear the tab from cache once the tab is closed
 browser.tabs.onRemoved.addListener(removeTabFromCache)
 
+// Listen to unblocking from redirect.js
 browser.runtime.onMessage.addListener(unblockSite);
 
+// Main Loop
 browser.webNavigation.onCommitted.addListener(main);
