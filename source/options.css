@@ -42,6 +42,8 @@ html, body {
 .greyText {
 	display: block;
 	padding-top: 10px;
+	font-size: .9em;
+	line-height: 2em;
 }
 
 

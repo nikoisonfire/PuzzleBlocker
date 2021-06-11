@@ -89,6 +89,7 @@ youtube.com
 			<label class="formLabel">Time until Hint</label>
 			<div>
 				<input type="number" id="hintTime" name="hintTime"> seconds
+			<span class="greyText">the time in seconds until you recieve a hint<br>default: 0 - never give hint</span>
 			</div>
 		</div>
 
@@ -96,9 +97,11 @@ youtube.com
 			<label class="formLabel">Time until Solution</label>
 			<div>
 				<input type="number" id="solutionTime" name="solutionTime"> seconds
+			<span class="greyText">the time in seconds until the puzzle is solved automatically<br>default: 0 - never solve automatically</span>
 			</div>
 		</div>
 	</div>
+	<button id="resetButton">reset to default</button>
 </form>
 
 <script src="options.js"></script>

@@ -1,13 +1,14 @@
 import browser from 'webextension-polyfill';
 
 import {Directions, FlipDirections, numOrientations} from "./tangram/directions";
-import {arrayEq, clipAngle, evalVal, shuffleArray, generating, setGenerating} from "./tangram/helpers";
+import {arrayEq, clipAngle, evalVal, shuffleArray, generating} from "./tangram/helpers";
 import {Tangram} from "./tangram/tangram";
 import {IntAdjoinSqrt2} from "./tangram/intadjoinsqrt2";
 import {Point} from "./tangram/point";
 import {computeSegments, getAllPoints, Tan} from "./tangram/tan";
 import {LineSegment} from "./tangram/lineSegement";
 import {generateTangrams} from "./tangram/generator";
+import optionsStorage from "./options-storage";
 
 /* Settings/letiables for generating yea */
 let numTangrams = 1000;
@@ -168,6 +169,7 @@ let setToSol = function () {
 		gameOutline[tanIndex] = generated[chosen].tans[tanIndex].dup();
 		updateTanPiece(tanIndex);
 	}
+	sendMessage();
 };
 
 /* Game logic - Display the outline of one tan that has not been displayed before */
@@ -183,8 +185,8 @@ let hint = function () {
 	let shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
 	shape.setAttributeNS(null, "points", generated[chosen].tans[hints[numHints]].toSVG());
 	shape.setAttributeNS(null, "fill", 'none');
-	shape.setAttributeNS(null, "stroke", "#E9E9E9");
-	shape.setAttributeNS(null, "stroke-width", "0.12");
+	shape.setAttributeNS(null, "stroke", "#00FFFF");
+	shape.setAttributeNS(null, "stroke-width", "0.2");
 	shape.setAttributeNS(null, "class", "hint");
 	document.getElementById("game").appendChild(shape);
 	numHints++;
@@ -398,7 +400,7 @@ let stopWatch = function () {
 };
 
 /* Watch - Increase seconds and update watch text */
-let updateWatch = function () {
+let updateWatch = function (hintTime, solTime) {
 	seconds++;
 	if (seconds >= 60) {
 		seconds = 0;
@@ -406,19 +408,38 @@ let updateWatch = function () {
 	}
 	let watch = document.getElementById("watch");
 	watch.textContent = "\uf017  " + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+	const totalTime = minutes*60+seconds;
+	if(totalTime >= hintTime && hintTime > 0) {
+		hint();
+		hintTime = 0;
+	}
+	if(totalTime >= solTime && solTime > 0) {
+		setToSol();
+		stopWatch();
+		return;
+	}
+
 	/* Update watch again in one second */
-	timer = setTimeout(updateWatch, 1000);
+	timer = setTimeout(() => updateWatch(hintTime, solTime), 1000);
 };
 
 /* Watch - Start watch -> set seconds and minutes to 0 */
-let startWatch = function () {
+let startWatch = async function () {
 	let watch = document.getElementById("watch");
 	watch.textContent = "\uf017  " + "00:00";
 	minutes = 0;
 	seconds = 0;
+
+	const options = await optionsStorage.getAll();
+	const hintTime = options.hintTime;
+	const solTime = options.solutionTime;
+
 	/* Update watch again in one second */
-	timer = setTimeout(updateWatch, 1000);
+	timer = setTimeout(() => updateWatch(hintTime, solTime), 1000);
 };
+
+
 
 /* Game logic - Show the tan pieces and add touch and mouse event listeners to
  * the tans */
