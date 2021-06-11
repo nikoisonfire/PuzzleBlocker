@@ -4,13 +4,24 @@ Private github repo for PuzzleBlocker Chrome extension
 
 ## Run
 
-1. `npm run watch`
-2. `web-ext run` in dist folder
+1. `npm run watch` - builds the extension into /distribution, watches for changes
+2. `web-ext run` in distribution folder (starts firefox)
 
-## Parcel Tasks
+## What's in the code?
 
-1. start - to start the local dev server
-2. build - to build the extension
-3. watch - watches for changes and recompiles to /distribution"
+This code uses an open-source tangram generator by @Wiebke:
+https://github.com/Wiebke/TangramGenerator
 
-Enjoy and make dat Ca$$$h
+
+### background.js
+background page file and redirect logic, also serves cache
+
+### options.html/.js/.css
+standard options page with @fregante's auto-sync
+
+### redirect.js / .html, .css
+page you're being redirect to when an URL is blacklisted in the options
+game logic: displays puzzle and takes all the necessary steps
+
+### /tangram
+game logic files, customized to use modern JS (TangramGenerator wasn't updated since 2015)
