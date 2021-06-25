@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unassigned-import
-import optionsStorage from './options-storage.js';
+import optionsStorage from './options/options-storage.js';
 import browser from 'webextension-polyfill';
 import cache from 'webext-storage-cache';
 import {generateTangrams} from "./tangram/generator";
@@ -72,10 +72,8 @@ async function removeTabFromCache(tabId) {
 
 function urlContains(url, keywords){
 	var result = false;
-	console.log("Checking url: "+url)
 
 	keywords.forEach(n => {
-		console.log("Keyword: "+n+" - match: "+url.includes(n))
 		if(url.includes(n)) {
 			result = true;
 		}
@@ -84,6 +82,14 @@ function urlContains(url, keywords){
 	return result;
 }
 
+function showGetStarted() {
+	browser.tabs.create(
+		{
+			active: true,
+			url: "https://www.puzzleblocker.com/get-started.html"
+		}
+	)
+}
 
 
 // Clear the tab from cache once the tab is closed
@@ -94,3 +100,9 @@ browser.runtime.onMessage.addListener(unblockSite);
 
 // Main Loop
 browser.webNavigation.onCommitted.addListener(main);
+
+// Show get started upon install
+browser.runtime.onInstalled.addListener(showGetStarted);
+
+// Show uninstall url
+browser.runtime.setUninstallURL("https://www.puzzleblocker.com/uninstall.html");

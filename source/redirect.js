@@ -8,7 +8,7 @@ import {Point} from "./tangram/point";
 import {computeSegments, getAllPoints, Tan} from "./tangram/tan";
 import {LineSegment} from "./tangram/lineSegement";
 import {generateTangrams} from "./tangram/generator";
-import optionsStorage from "./options-storage";
+import optionsStorage from "./options/options-storage";
 
 /* Settings/letiables for generating yea */
 let numTangrams = 1000;
@@ -733,17 +733,10 @@ window.onload = function () {
 		hints = [0, 1, 2, 3, 4, 5, 6];
 		numHints = 0;
 		snapped = [false, false, false, false, false, false, false];
-		let watch = document.getElementById("watch");
-		while (watch.firstChild) {
-			watch.removeChild(watch.firstChild);
-		}
 		let hintElements = document.getElementsByClassName("hint");
 		while (hintElements.length > 0) {
 			hintElements[0].parentNode.removeChild(hintElements[0]);
 		}
-		watch.setAttributeNS(null, "x", "3");
-		watch.setAttributeNS(null, "y", "58.5");
-		startWatch();
 		let tangramPieces = document.getElementsByClassName("tan");
 		for (let tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
 			tangramPieces[tanIndex].setAttributeNS(null, "fill", "#FF9900");

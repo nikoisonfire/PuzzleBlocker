@@ -7,9 +7,9 @@ import {computeBoundingBox, computeOutline, getAllPoints, outlineArea} from "./t
 import {IntAdjoinSqrt2} from "./intadjoinsqrt2";
 import {Point, relativeOrientation} from "./point";
 import {LineSegment} from "./lineSegement";
-import optionsStorage from "../options-storage";
+import optionsStorage from "../options/options-storage";
 
-//const evaluationMode = 3;
+const evaluationMode = Math.floor(Math.random() * 5)
 const faculty = [1, 1, 2, 6, 24, 120, 720, 5040, 40320];
 
 export class Evaluation {
@@ -58,19 +58,6 @@ export class Evaluation {
 
 	/* TODO */
 	getValue = async function (mode) {
-		let evaluationMode;
-		const options = await optionsStorage.getAll();
-		switch (options.difficulty) {
-			case 'easy':
-				evaluationMode = 0
-				break;
-			case 'medium':
-				evaluationMode = 3
-				break;
-			case 'hard':
-				evaluationMode = 5
-				break;
-		}
 
 		if (typeof mode === 'undefined') {
 			mode = 5;
@@ -81,36 +68,29 @@ export class Evaluation {
 			case 0:
 				/* Order according to a high convex percentage */
 				evaluation = 1.0 - this.convexPercentage;
-				console.log("MODE 0 - default")
 				break;
 			case 1:
 				/* Order according to a low number of outline vertices */
 				evaluation = this.outlineVertices;
-				console.log("MODE 1")
 				break;
 			case 2:
 				/* Order according to a low number of outer Outline vertices */
 				evaluation = this.outerOutlineVertices;
-				console.log("MODE 2")
 				break;
 			case 3:
 				/* Order according to a small perimeter */
 				evaluation = this.perimeter;
-				console.log("MODE 3")
 				break;
 			case 4:
 				/* Order according to a high number of matched Vertices */
 				evaluation = -this.matchedVertices;
-				console.log("MODE 4")
 				break;
 			case 5:
 				/* Order according to both a low number of outer outline vertices
 				 * and a high convex percentage */
 				evaluation = (this.outerOutlineVertices - 3) / 26 + 1.0 - this.convexPercentage;
-				console.log("MODE 5")
 				break;
 			default:
-				console.log("Default mode")
 				evaluation = 0;
 		}
 		return evaluation
