@@ -2,13 +2,11 @@
 import optionsStorage from './options/options-storage.js';
 import browser from 'webextension-polyfill';
 import cache from 'webext-storage-cache';
-import {generateTangrams} from "./tangram/generator";
 
 let difficulty;
 
 async function main(details) {
 	const options = await optionsStorage.getAll();
-
 
 	if(options.enabled) {
 		const blacklistArray = options.blacklist.split("\n").filter(
@@ -57,7 +55,7 @@ async function main(details) {
 	}
 }
 
-async function unblockSite(tabId, sender, sendResponse) {
+async function unblockSite(tabId) {
 
 	const redirect = await cache.get(tabId);
 
@@ -81,14 +79,19 @@ function urlContains(url, keywords){
 
 	return result;
 }
+// long days = (millis / (60*60*24*1000))
 
-function showGetStarted() {
-	browser.tabs.create(
-		{
-			active: true,
-			url: "https://www.puzzleblocker.com/get-started.html"
-		}
-	)
+async function showGetStarted(details) {
+	const now = new Date(Date.now());
+	await optionsStorage.set({installDate: now.toString()})
+	if(details.reason === "install") {
+		browser.tabs.create(
+			{
+				active: true,
+				url: "https://www.puzzleblocker.com/get-started.html"
+			}
+		)
+	}
 }
 
 

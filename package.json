@@ -52,6 +52,7 @@
 		"@parcel/packager-html": "^2.0.0-nightly.599",
 		"@parcel/transformer-css": "^2.0.0-nightly.599",
 		"@parcel/transformer-html": "^2.0.0-nightly.598",
+		"@parcel/transformer-image": "^2.0.0-nightly.2253",
 		"@parcel/transformer-postcss": "^2.0.0-nightly.599",
 		"@parcel/transformer-posthtml": "^2.0.0-nightly.598",
 		"@parcel/transformer-webextension": "^2.0.0-nightly.2220",

@@ -1,4 +1,5 @@
 import browser from 'webextension-polyfill';
+import WebExtRatingModal from "../../../_Web/web-ext-ask4rating-1/dist/tsc/";
 
 import {Directions, FlipDirections, numOrientations} from "./tangram/directions";
 import {arrayEq, clipAngle, evalVal, shuffleArray, generating} from "./tangram/helpers";
@@ -9,6 +10,8 @@ import {computeSegments, getAllPoints, Tan} from "./tangram/tan";
 import {LineSegment} from "./tangram/lineSegement";
 import {generateTangrams} from "./tangram/generator";
 import optionsStorage from "./options/options-storage";
+
+import logo from 'url:./logo.png';
 
 /* Settings/letiables for generating yea */
 let numTangrams = 1000;
@@ -657,8 +660,25 @@ let startGenerator = function () {
 	firstGeneration = false;
 };
 
-
 window.onload = function () {
+	console.info(logo);
+	user = optionsStorage.getAll().
+		then(
+			data => {
+				const idate = new Date(data.installDate);
+				const fbm = new WebExtRatingModal({
+					window: window,
+					headline: "Would you mind sparing some feedback?",
+					text: "Wheather you enjoy PuzzleBlock, or can't stand it, we'd love to hear your Feedback on the Chrome Web Store for it.",
+					installDate: idate,
+					logo: logo,
+					storeLinks: {
+						firefox: "http://mozilla.org"
+					}
+				});
+			})
+		.catch(error => console.log(error));
+
 	user = new Date().getTime();
 	/* Provide fallBack if Workers or inline SVG are not supported */
 	if (typeof SVGRect === "undefined" || !window.Worker) {

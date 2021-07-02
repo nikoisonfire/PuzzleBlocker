@@ -9,17 +9,29 @@ div {
 }
 body {
 	margin: 0;
+	position: relative;
+	font-family: Arial, sans-serif;
 	padding: 0;
-	background: #ff9966;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to bottom, #ff5e62, #ff9966);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to bottom, #ff5e62, #ff9966); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+	background: #ff9966; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		to bottom,
+		#ff5e62,
+		#ff9966
+	); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(
+		to bottom,
+		#ff5e62,
+		#ff9966
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 a {
 	text-decoration: none;
 	color: black;
 }
-header, footer, section, aside {
+header,
+footer,
+section,
+aside {
 	display: block;
 }
 
@@ -64,7 +76,8 @@ header, footer, section, aside {
 	fill: white !important;
 }
 
-#game, #loading {
+#game,
+#loading {
 	display: none;
 	width: 80%;
 	margin-right: 10%;
@@ -81,7 +94,7 @@ header, footer, section, aside {
 }
 
 #loading {
-	background-color: #E9E9E9;
+	background-color: #e9e9e9;
 }
 
 .clear {
@@ -90,12 +103,12 @@ header, footer, section, aside {
 
 #buttons {
 	text-align: center;
-	padding-top: 2%
+	padding-top: 2%;
 }
 
 button {
 	font-size: 1em;
-	color: #BCBCBC;
+	color: #bcbcbc;
 	background-color: #666666;
 	padding: 15px 10px;
 	width: 15%;
@@ -106,7 +119,7 @@ button {
 
 button:hover {
 	color: #666666;
-	background-color: #BCBCBC;
+	background-color: #bcbcbc;
 }
 
 .buttonText {
@@ -117,10 +130,13 @@ svg text {
 	font-family: FontAwesome, sans-serif;
 }
 
-#select, #set, #hint, #sol {
+#select,
+#set,
+#hint,
+#sol {
 	display: none;
 	margin-left: 2%;
-	margin-right: 2%
+	margin-right: 2%;
 }
 
 footer {
@@ -142,24 +158,23 @@ footer {
 }
 
 #piece0 {
-	fill: #E1462C !important;
+	fill: #e1462c !important;
 }
 #piece1 {
-	fill: #FAF05B !important;
+	fill: #faf05b !important;
 }
 #piece2 {
-	fill: #87CEE9 !important;
+	fill: #87cee9 !important;
 }
 #piece3 {
-	fill: #F8BB4B !important;
+	fill: #f8bb4b !important;
 }
 #piece4 {
-	fill: #F88C96 !important;
+	fill: #f88c96 !important;
 }
 #piece5 {
-	fill: #FBF69A !important;
+	fill: #fbf69a !important;
 }
 #piece6 {
-	fill: #C8D951 !important;
+	fill: #c8d951 !important;
 }
-
