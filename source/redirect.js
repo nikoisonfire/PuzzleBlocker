@@ -671,6 +671,7 @@ window.onload = function () {
 					headline: "Would you mind sparing some feedback?",
 					text: "Wheather you enjoy PuzzleBlock, or can't stand it, we'd love to hear your Feedback on the Chrome Web Store for it.",
 					installDate: idate,
+					frequency: 1,
 					logo: logo,
 					storeLinks: {
 						firefox: "http://mozilla.org"
