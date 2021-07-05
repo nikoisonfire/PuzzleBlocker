@@ -40,7 +40,7 @@ async function main(details) {
 				// Check if tabCache exists
 				if(tabCache === undefined) {
 					const newCache = await cache.set(currentTab, currentURL, {
-						minutes: 30
+						minutes: options.cacheTime
 					});
 				}
 				else if (tabCache === "") {
@@ -83,8 +83,8 @@ function urlContains(url, keywords){
 
 async function showGetStarted(details) {
 	const now = new Date(Date.now());
-	await optionsStorage.set({installDate: now.toString()})
 	if(details.reason === "install") {
+		await optionsStorage.set({installDate: now.toString()})
 		browser.tabs.create(
 			{
 				active: true,

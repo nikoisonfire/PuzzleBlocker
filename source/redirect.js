@@ -1,5 +1,4 @@
 import browser from 'webextension-polyfill';
-import WebExtRatingModal from "../../../_Web/web-ext-ask4rating-1/dist/tsc/";
 
 import {Directions, FlipDirections, numOrientations} from "./tangram/directions";
 import {arrayEq, clipAngle, evalVal, shuffleArray, generating} from "./tangram/helpers";
@@ -12,6 +11,7 @@ import {generateTangrams} from "./tangram/generator";
 import optionsStorage from "./options/options-storage";
 
 import logo from 'url:./logo.png';
+import WebExtFeedbackPopup from "webext-feedback-popup";
 
 /* Settings/letiables for generating yea */
 let numTangrams = 1000;
@@ -661,26 +661,31 @@ let startGenerator = function () {
 };
 
 window.onload = function () {
-	console.info(logo);
-	user = optionsStorage.getAll().
+	const modal = optionsStorage.getAll().
 		then(
 			data => {
 				const idate = new Date(data.installDate);
-				const fbm = new WebExtRatingModal({
+				const fbm = new WebExtFeedbackPopup({
 					window: window,
-					headline: "Would you mind sparing some feedback?",
-					text: "Wheather you enjoy PuzzleBlock, or can't stand it, we'd love to hear your Feedback on the Chrome Web Store for it.",
+					headline: "Enjoying PuzzleBlocker?",
+					text: `<div class="fbm-custom-text">
+						<p>Do you enjoy using PuzzleBlocker or have <br>some suggestions to improve it?</p> 
+						<p>Give us your feedback and a rating by visiting the link below.</p> 
+						<p>Thank you!</p>
+						</div>`,
 					installDate: idate,
-					frequency: 1,
+					frequency: 2,
+					theme: "light",
+					timeout: (7*24*1000*60*60),
 					logo: logo,
 					storeLinks: {
-						firefox: "http://mozilla.org"
+						chrome: "https://chrome.google.com/webstore/detail/puzzleblocker/naomldldmhjaaomjbgldgefgjcidhbki",
+						firefox: "https://addons.mozilla.org/de/firefox/addon/puzzleblocker/"
 					}
 				});
 			})
 		.catch(error => console.log(error));
 
-	user = new Date().getTime();
 	/* Provide fallBack if Workers or inline SVG are not supported */
 	if (typeof SVGRect === "undefined" || !window.Worker) {
 		/* Show Browser fallback PNG */

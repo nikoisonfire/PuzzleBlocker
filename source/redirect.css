@@ -178,3 +178,12 @@ footer {
 #piece6 {
 	fill: #c8d951 !important;
 }
+
+.fbm-custom-text {
+	text-align: center;
+	line-height: 1.2 !important;
+}
+.fbm-custom-text p {
+	font-size: 1.1rem;
+	margin: 0 0 20px 0;
+}

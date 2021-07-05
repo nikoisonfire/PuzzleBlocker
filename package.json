@@ -40,6 +40,7 @@
 	},
 	"dependencies": {
 		"chrome": "^0.1.0",
+		"webext-feedback-popup": "^1.0.2",
 		"webext-options-sync": "^2.0.1",
 		"webext-storage-cache": "^4.2.0",
 		"webextension-polyfill": "^0.7.0"

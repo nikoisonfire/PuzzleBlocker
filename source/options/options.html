@@ -1,19 +1,19 @@
-<!doctype html>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<meta charset="utf-8" />
 <title>Options</title>
-<link rel="stylesheet" href="chrome://global/skin/in-content/common.css">
-<link rel="stylesheet" href="options.css">
+<link rel="stylesheet" href="chrome://global/skin/in-content/common.css" />
+<link rel="stylesheet" href="options.css" />
 
 <form id="options-form" class="detail-view-container">
 	<h2>Options</h2>
-	<br/>
+	<br />
 	<strong><i>NOTE: Settings are saved automatically</i></strong>
 	<div class="options">
 		<div class="option">
 			<label class="formLabel">Enabled</label>
 			<div>
 				<label class="switch">
-					<input type="checkbox" id="enabled" name="enabled">
+					<input type="checkbox" id="enabled" name="enabled" />
 					<span class="slider round"></span>
 				</label>
 			</div>
@@ -22,12 +22,15 @@
 		<div class="option texta">
 			<label class="formLabel">Blacklist</label>
 			<div>
-			<textarea id="blacklist" rows="10" name="blacklist">facebook.com
+				<textarea id="blacklist" rows="10" name="blacklist">
+facebook.com
 youtube.com
-9gag.com</textarea>
-				<span class="greyText">domains only - no http://</span>
+9gag.com</textarea
+				>
+				<span class="greyText"
+					>one domain per line -- domains only - no http://</span
+				>
 			</div>
-
 		</div>
 
 		<div class="option">
@@ -45,10 +48,12 @@ youtube.com
 			<label class="formLabel">Block embedded</label>
 			<div>
 				<label class="switch">
-					<input type="checkbox" id="embedded" name="embedded">
+					<input type="checkbox" id="embedded" name="embedded" />
 					<span class="slider round"></span>
 				</label>
-				<span class="greyText">i.e. tweets, facebook posts, youtube videos in other pages</span>
+				<span class="greyText"
+					>i.e. tweets, facebook posts, youtube videos in other pages</span
+				>
 			</div>
 		</div>
 
@@ -86,18 +91,36 @@ youtube.com
 		-->
 
 		<div class="option">
+			<label class="formLabel">Cache Time</label>
+			<div>
+				<input type="number" id="cacheTime" name="cacheTime" /> minutes
+				<span class="greyText"
+					>time in *minutes* before the blocking cache expires. any open tabs
+					that you have previously unlocked will need to be puzzled again<br />default:
+					10 minutes</span
+				>
+			</div>
+		</div>
+
+		<div class="option">
 			<label class="formLabel">Time until Hint</label>
 			<div>
-				<input type="number" id="hintTime" name="hintTime"> seconds
-			<span class="greyText">the time in seconds until you recieve a hint<br>default: 0 - never give hint</span>
+				<input type="number" id="hintTime" name="hintTime" /> seconds
+				<span class="greyText"
+					>the time in seconds until you recieve a hint<br />default: 0 - never
+					give hint</span
+				>
 			</div>
 		</div>
 
 		<div class="option">
 			<label class="formLabel">Time until Solution</label>
 			<div>
-				<input type="number" id="solutionTime" name="solutionTime"> seconds
-			<span class="greyText">the time in seconds until the puzzle is solved automatically<br>default: 0 - never solve automatically</span>
+				<input type="number" id="solutionTime" name="solutionTime" /> seconds
+				<span class="greyText"
+					>the time in seconds until the puzzle is solved automatically<br />default:
+					0 - never solve automatically</span
+				>
 			</div>
 		</div>
 	</div>
