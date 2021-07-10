@@ -40,7 +40,7 @@ async function main(details) {
 				// Check if tabCache exists
 				if(tabCache === undefined) {
 					const newCache = await cache.set(currentTab, currentURL, {
-						minutes: options.cacheTime
+						minutes: parseInt(options.cacheTime)
 					});
 				}
 				else if (tabCache === "") {
