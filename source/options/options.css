@@ -2,8 +2,19 @@ html {
 	min-width: 550px;
 	overflow-x: hidden; /* Required to hide horizontal scroll on Firefox */
 }
-html, body {
+html,
+body {
 	height: 100%;
+	background-color: #fff;
+}
+body {
+	padding: 10px;
+}
+textarea,
+input,
+select {
+	background-color: #fff !important;
+	color: black;
 }
 
 /* For use with screen readers */
@@ -21,7 +32,8 @@ html, body {
 	border-spacing: 0.5em;
 	width: 100%;
 }
-.option .formLabel, .option div {
+.option .formLabel,
+.option div {
 	vertical-align: top;
 	display: table-cell;
 	padding: 20px 0;
@@ -42,11 +54,9 @@ html, body {
 .greyText {
 	display: block;
 	padding-top: 10px;
-	font-size: .9em;
+	font-size: 0.9em;
 	line-height: 2em;
 }
-
-
 
 /* The switch - the box around the slider */
 .switch {
@@ -72,8 +82,8 @@ html, body {
 	right: 0;
 	bottom: 0;
 	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
 }
 
 .slider:before {
@@ -84,16 +94,16 @@ html, body {
 	left: 4px;
 	bottom: 4px;
 	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
 }
 
 input:checked + .slider {
-	background-color: #2196F3;
+	background-color: #2196f3;
 }
 
 input:focus + .slider {
-	box-shadow: 0 0 1px #2196F3;
+	box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {

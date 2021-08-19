@@ -680,7 +680,8 @@ window.onload = function () {
 					logo: logo,
 					storeLinks: {
 						chrome: "https://chrome.google.com/webstore/detail/puzzleblocker/naomldldmhjaaomjbgldgefgjcidhbki",
-						firefox: "https://addons.mozilla.org/de/firefox/addon/puzzleblocker/"
+						firefox: "https://addons.mozilla.org/de/firefox/addon/puzzleblocker/",
+						edge: "https://microsoftedge.microsoft.com/addons/detail/puzzleblocker/doiephdmgmcbdjilfgfjcjiajdinfaeg"
 					}
 				});
 			})

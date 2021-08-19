@@ -1,6 +1,6 @@
 {
-	"name": "PuzzleBlocker",
-	"version": "1.1.4",
+	"name": "PuzzleBlocker: Stop wasting time by solving puzzles",
+	"version": "1.1.5",
 	"description": "Solve puzzles to stop procrastinating on time-wasting websites.",
 	"homepage_url": "https://www.puzzleblocker.com",
 	"manifest_version": 2,
