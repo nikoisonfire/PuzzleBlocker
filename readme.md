@@ -1,6 +1,6 @@
 # PuzzleBlocker
 
-!(Puzzle Blocker Logo)[source/logo.png]
+![source/logo.png](PB Logo)
 
 Source repo for PuzzleBlocker Chrome extension
 
