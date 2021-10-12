@@ -13,6 +13,8 @@ Learned many lessons building this thing, hopefully there is some wisdom for oth
 1. `npm run watch` - builds the extension into /distribution, watches for changes
 2. `web-ext run` in distribution folder (starts firefox)
 
+You can also test this in Chrome, Opera, Edge. Consult the [docs](https://github.com/mozilla/web-ext)
+
 ## What's in the code?
 
 This code uses an open-source tangram generator by @Wiebke:
