@@ -36,3 +36,9 @@ game logic: displays puzzle and takes all the necessary steps
 ### /tangram
 
 game logic files, customized to use modern JS (TangramGenerator wasn't updated since 2015)
+
+## License
+
+GNU General Public License v3.0
+
+[Details on ChooseALicense](https://choosealicense.com/licenses/gpl-3.0/)
